@@ -152,7 +152,7 @@ def get_stats(**kwargs):
 
     TODO: fix date parsing
     """
-    if sites not in kwargs:
+    if 'sites' not in kwargs:
         raise TypeError('Query must specify a site or list of sites')
 
     query = query_waterservices('stat', **kwargs)
@@ -183,6 +183,14 @@ def query(url, **kwargs):
     try:
 
         req = requests.get(url, params=payload)
+        # TODO remove these code snippets
+        #print(req.url)
+        #print("encoding {}".format(req.encoding))
+        #with open('output.txt', 'w', encoding=req.encoding) as f:
+        #    f.write(req.text)
+        #with open('output.json', 'w') as f:
+        #    import json
+        #    f.write(json.dumps(req.json()))
 
     except ConnectionError:
 
@@ -211,7 +219,7 @@ def query_waterdata(service, **kwargs):
         raise TypeError('Query must specify a major filter: site_no, stateCd, bBox')
 
     elif any(key in kwargs for key in bbox_params) \
-    and not all(keys in kwargs for key in bbox_params):
+    and not all(key in kwargs for key in bbox_params):
         raise TypeError('One or more lat/long coordinates missing or invalid.')
 
     if service not in WATERDATA_SERVICES:
